@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Damyup Digital Store</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 12px 110px 12px;
+    }
+   
+    .container {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+      padding-top: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .photo2 {      
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.30);      
+      width: 100%;
+      max-width: 500px;
+      display: inline-block;
+      border-radius: 24px;
+      overflow: hidden;
+    }
+  .photo1 {
+      width: 100%;             /* Sesuaikan lebar gambar */
+      max-width: 500px;        /* Batas lebar maksimal */
+      border-radius: 24px;      /* Lengkungan sudut pada gambar */
+      display: block;          /* Menghilangkan sela kosong di bawah gambar */
+}    
+      .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header p {
+      font-size: 11px;
+      color: #2563eb;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Grid 2 Kolom Tetap Sejajar di Layar HP */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .product-card {
+      background-color: #ffffff;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.1s ease;
+      position: relative;
+    }
+
+    .card-cover {
+      height: 25px;
+      background-color: #2563eb;
+      width: 100%;
+    }
+
+    .card-body {
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+    }
+
+    /* Efek Saat Produk Dipilih */
+    .product-card.selected {
+      border: 2px solid #2563eb;
+      background-color: #eff6ff;
+      box-shadow: 0 0 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .product-details {
+      margin-bottom: 12px;
+    }
+
+    .product-details div {
+      font-size: 11px;
+      color: #475569;
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+
+    .product-price {
+      font-size: 12px;
+      font-weight: 700;
+      color: #2563eb;
+      text-align: right;
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      padding: 4px 8px;
+      border-radius: 4px;
+      align-self: flex-end;
+    }
+
+    /* Floating Bar Bawah */
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+      box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .error-toast {
+      display: none;
+      font-size: 11px;
+      color: #dc2626;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .btn-buy {
+      background-color: #2563eb;
+      color: #ffffff;
+      border: none;
+      padding: 12px 0;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 400px;
+      text-transform: uppercase;
+    }
+
+    .btn-buy:active {
+      transform: scale(0.98);
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px 0 10px 0;
+      font-size: 11px;
+      color: #94a3b8;
+      border-top: 1px solid #f1f5f9;
+      margin-top: 28px;
+    }
+
+    /* Modal Whatsapp Pop-up */
+    .output-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(15, 23, 42, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .output-overlay.active {
+      display: flex;
+    }
+
+    .output-box {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 20px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    .output-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .selected-info {
+      font-size: 12px;
+      color: #2563eb;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background-color: #eff6ff;
+      padding: 6px;
+      border-radius: 4px;
+    }
+
+    .output-text {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 12px;
+    }
+
+    .wa-link-container {
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      word-break: break-all;
+    }
+
+    .wa-link-container a {
+      color: #2563eb;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .btn-close {
+      background-color: #e2e8f0;
+      color: #1e293b;
+      border: none;
+      padding: 8px 18px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h1>Damyup Digital Store</h1><br>
+      <p>List Premium Account</p>
+    </div>
+    <div class="photo2">
+    <img src="web_photo.png" width="325" height="165" class="photo1"></div>
+    <br><br>
+    <h3>PRODUK: </h3><br>
+    <hr>
+    <br><br>
+    <div class="product-grid">
+      <div class="product-card" onclick="selectCard(this, 'Alight Motion - Rp2.000')">
+        <div class="card-cover"></div>
+        <div class="card-body">
+          <div>
+            <div class="product-name">Alight Motion</div>
+            <div class="product-details">
+              <div>- 1 month</div>
+              <div>- private account</div>
+            </div>
+          </div>
+          <div class="product-price">Rp2.000</div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="selectCard(this, 'Spotify - Rp10.000')">
+        <div class="card-cover"></div>
+        <div class="card-body">
+          <div>
+            <div class="product-name">Spotify</div>
+            <div class="product-details">
+              <div>- 1 month</div>
+              <div>- download offline music</div>
+              <div>- No ads</div>
+            </div>
+          </div>
+          <div class="product-price">Rp10.000</div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="selectCard(this, 'Canva - Rp11.000')">
+        <div class="card-cover"></div>
+        <div class="card-body">
+          <div>
+            <div class="product-name">Canva</div>
+            <div class="product-details">
+              <div>- 1 month</div>
+              <div>- Unlock all features</div>
+            </div>
+          </div>
+          <div class="product-price">Rp11.000</div>
+        </div>
+      </div>
+
+      <div class="product-card" onclick="selectCard(this, 'Netflix - Rp10.000')">
+        <div class="card-cover"></div>
+        <div class="card-body">
+          <div>
+            <div class="product-name">Netflix</div>
+            <div class="product-details">
+              <div>- 1 month</div>
+            </div>
+          </div>
+          <div class="product-price">Rp16.000</div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      @ Copyright 2026 Damyup.
+    </footer>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="error-toast" id="errorToast">! Silakan pilih salah satu produk terlebih dahulu</div>
+    <button class="btn-buy" onclick="openOutput()">BELI SEKARANG</button>
+  </div>
+
+  <div class="output-overlay" id="outputModal">
+    <div class="output-box">
+      <div class="output-title">Link Grup WhatsApp</div>
+      <div class="selected-info" id="selectedProductText">Lanjut Ke WhatsApp</div>
+      <div class="output-text">
+        Silakan klik tautan di bawah ini untuk masuk ke grup transaksi:
+      </div>
+      <div class="wa-link-container">
+        <a href="https://chat.whatsapp.com/EEOvjQyXxcT5m8D8ZVUGMG?s=cl&p=a&mlu=4&ilr=4" target="_blank">
+          https://chat.whatsapp.com/GrupWhatsAppDamyup
+        </a>
+      </div>
+      <button class="btn-close" onclick="closeOutput()">TUTUP</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedProductData = null;
+
+    function selectCard(element, productName) {
+      // Sembunyikan pesan eror jika ada
+      document.getElementById('errorToast').style.display = 'none';
+      
+      // Hapus status selected dari semua card
+      const cards = document.querySelectorAll('.product-card');
+      cards.forEach(card => card.classList.remove('selected'));
+      
+      // Tambah status selected ke card yang diklik
+      element.classList.add('selected');
+      selectedProductData = productName;
+    }
+
+    function openOutput() {
+      if (!selectedProductData) {
+        document.getElementById('errorToast').style.display = 'block';
+        return;
+      }
+      
+      document.getElementById('selectedProductText').innerText = "Lanjut Ke WhatsApp ";
+      document.getElementById('outputModal').classList.add('active');
+    }
+
+    function closeOutput() {
+      document.getElementById('outputModal').classList.remove('active');
+    }
+  </script>
+
+</body>
+</html>
